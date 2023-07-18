@@ -122,7 +122,7 @@ class _SignInScreenState extends State<SignInScreen> {
           password.toString().isNotEmpty &&
           password != null) {
         Uri uri =
-            Uri.parse("http://${Constants().hostName}:7042/api/user/register");
+            Uri.parse("https://${Constants().hostName}:7042/api/user/register");
         final json = jsonEncode({
           "email": "$email",
           "password": "$password",
