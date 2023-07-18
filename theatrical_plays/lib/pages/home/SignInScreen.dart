@@ -82,7 +82,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             side: BorderSide(color: MyColors().cyan)),
                         textStyle: TextStyle(color: MyColors().cyan)),
                     child: Text(
-                      'Sign in',
+                      'Sign up',
                       style: TextStyle(color: MyColors().cyan),
                     ),
                     onPressed: () {
@@ -122,11 +122,11 @@ class _SignInScreenState extends State<SignInScreen> {
           password.toString().isNotEmpty &&
           password != null) {
         Uri uri =
-            Uri.parse("http://${Constants().hostName}:7042/api/user/register");
+            Uri.parse("https://${Constants().hostName}:7042/api/user/register");
         final json = jsonEncode({
           "email": "$email",
           "password": "$password",
-          "authorities": ["USER"]
+          "role": ["2"]
         });
         Response response = await post(uri,
             headers: {
@@ -154,13 +154,16 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ));
       }
-    } on Exception {
+    } on Exception catch (e) {
+      String errorMessage = e.toString();
+
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-          "Error to Sign Up, please contact the app provider",
+          errorMessage,
           textAlign: TextAlign.center,
         ),
       ));
+      print(errorMessage);
     }
   }
 }
