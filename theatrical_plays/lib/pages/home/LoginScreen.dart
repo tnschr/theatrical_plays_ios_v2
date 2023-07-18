@@ -109,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextButton(
                     child: Text(
-                      'Sign in',
+                      'Sign up',
                       style: TextStyle(fontSize: 20, color: MyColors().cyan),
                     ),
                     onPressed: () {
@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
   doLogin(email, password) async {
     try {
       Uri uri = Uri.parse(
-          "http://${Constants().hostName}:8080/api/users/login?email=$email&password=$password");
+          "http://${Constants().hostName}:7042/api/users/login?email=$email&password=$password");
       Response response =
           await get(uri, headers: {"Accept": "application/json"});
       if (response.statusCode == 200) {

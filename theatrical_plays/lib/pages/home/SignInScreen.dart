@@ -122,7 +122,7 @@ class _SignInScreenState extends State<SignInScreen> {
           password.toString().isNotEmpty &&
           password != null) {
         Uri uri =
-            Uri.parse("http://${Constants().hostName}:8080/api/users/register");
+            Uri.parse("http://${Constants().hostName}:7042/api/user/register");
         final json = jsonEncode({
           "email": "$email",
           "password": "$password",
@@ -137,7 +137,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
         if (response.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("Succesfull Sign in"),
+            content: Text("Succesfull Sign up"),
           ));
           Navigator.pop(
               context, MaterialPageRoute(builder: (context) => LoginScreen()));
@@ -147,10 +147,20 @@ class _SignInScreenState extends State<SignInScreen> {
               .showSnackBar(SnackBar(content: Text("Not valid credentials")));
         }
       } else {
-        print("Empty Field");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            "There is an empty field",
+            textAlign: TextAlign.center,
+          ),
+        ));
       }
     } on Exception {
-      print('error to sign in');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "Error to Sign Up, please contact the app provider",
+          textAlign: TextAlign.center,
+        ),
+      ));
     }
   }
 }
