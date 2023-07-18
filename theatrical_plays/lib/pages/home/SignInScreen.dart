@@ -137,7 +137,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
         if (response.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("Succesfull Sign up"),
+            content: Text("Succesfull Sign up!"),
           ));
           Navigator.pop(
               context, MaterialPageRoute(builder: (context) => LoginScreen()));
