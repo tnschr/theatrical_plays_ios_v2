@@ -7,7 +7,7 @@ import 'package:theatrical_plays/using/MyColors.dart';
 
 class TheaterProfile extends StatelessWidget {
   final Theater theater;
-  const TheaterProfile({key, this.theater}) : super(key: key);
+  const TheaterProfile({key, required this.theater}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

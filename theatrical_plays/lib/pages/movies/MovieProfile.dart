@@ -13,7 +13,7 @@ class MovieProfile extends StatefulWidget {
 
 class _MovieProfile extends State<MovieProfile> {
   Movie movie;
-  _MovieProfile({this.movie});
+  _MovieProfile({required this.movie});
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -82,6 +82,7 @@ class _MovieProfile extends State<MovieProfile> {
   }
 
   Widget buildImage() {
+    // ignore: unused_local_variable
     final image =
         NetworkImage("https://thumbs.dreamstime.com/z/print-178440812.jpg");
 
@@ -96,7 +97,7 @@ class _MovieProfile extends State<MovieProfile> {
 
   _launchURL(String query) async {
     final url = 'https://www.youtube.com/results?search_query=$query';
-    // ignore: deprecated_member_use
+    // ignore: deprecated_member_use, unnecessary_null_comparison
     if (await canLaunch(url) != null) {
       // ignore: deprecated_member_use
       launchUrl(Uri.parse(url));

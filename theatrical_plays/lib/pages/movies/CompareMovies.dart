@@ -24,7 +24,7 @@ class CompareMovies extends StatefulWidget {
 
 class _CompareMoviesState extends State<CompareMovies> {
   List<Movie> selectedMovies = [];
-  _CompareMoviesState({this.selectedMovies});
+  _CompareMoviesState({required this.selectedMovies});
 
   List<CompMovie> compareMovies = [];
   CompMovie compareMovie;
@@ -76,7 +76,7 @@ class _CompareMoviesState extends State<CompareMovies> {
               } else if (snapshot.hasError) {
                 return Text("error loading");
               } else {
-                if (snapshot.data.isNotEmpty) {
+                if (snapshot.data!.isNotEmpty) {
                   castPrice(compareMovies);
                   return chartBuilder();
                 } else {
@@ -137,7 +137,7 @@ class _CompareMoviesState extends State<CompareMovies> {
       item.priceRange = item.priceRange.replaceAll(',', '.');
       var numbers = doubleRE
           .allMatches(item.priceRange)
-          .map((m) => double.parse(m[0]))
+          .map((m) => double.parse(m[0]!))
           .toList();
       if (numbers.isNotEmpty) {
         clearPrice = numbers.reduce(max);

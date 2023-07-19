@@ -9,7 +9,7 @@ class AuthorizationStore {
   }
 
   //Get a value from store
-  static Future<String> getStoreValue(key) async {
+  static Future<String?> getStoreValue(key) async {
     return await storage.read(key: key);
   }
 
