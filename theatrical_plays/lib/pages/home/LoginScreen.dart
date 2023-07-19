@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:theatrical_plays/pages/Home.dart';
 import 'package:theatrical_plays/using/AuthorizationStore.dart';
@@ -20,12 +21,12 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         // ignore: deprecated_member_use
-        brightness: Brightness.dark,
         title: Text(
           'Theatrical analytics',
           style: TextStyle(color: MyColors().cyan),
         ),
         backgroundColor: MyColors().black,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       backgroundColor: MyColors().black,
       body: Padding(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:theatrical_plays/models/Movie.dart';
 import 'package:theatrical_plays/pages/movies/MovieProfile.dart';
@@ -58,12 +59,12 @@ class _MovieInfoState extends State<MovieInfo> {
     return Scaffold(
         appBar: AppBar(
           // ignore: deprecated_member_use
-          brightness: Brightness.dark,
           title: Text(
             'Movie Info',
             style: TextStyle(color: MyColors().cyan),
           ),
           backgroundColor: MyColors().black,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
         backgroundColor: MyColors().black,
         //call the method to load actor and show

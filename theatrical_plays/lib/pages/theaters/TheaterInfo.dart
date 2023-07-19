@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:theatrical_plays/models/Theater.dart';
 import 'package:theatrical_plays/pages/theaters/TheaterMovieSection.dart';
@@ -46,12 +47,12 @@ class _TheaterInfoState extends State<TheaterInfo> {
     return Scaffold(
         appBar: AppBar(
           // ignore: deprecated_member_use
-          brightness: Brightness.dark,
           title: Text(
             'Theater Info',
             style: TextStyle(color: MyColors().cyan),
           ),
           backgroundColor: MyColors().black,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
         backgroundColor: MyColors().black,
         //call the method to load actor and show

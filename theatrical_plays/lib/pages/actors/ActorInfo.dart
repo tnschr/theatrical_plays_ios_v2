@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:theatrical_plays/models/Actor.dart';
 import 'package:theatrical_plays/pages/actors/BodyProfileWidget.dart';
@@ -52,12 +53,12 @@ class _ActorInfoState extends State<ActorInfo> {
     return Scaffold(
         appBar: AppBar(
           // ignore: deprecated_member_use
-          brightness: Brightness.dark,
           title: Text(
             'Actor Info',
             style: TextStyle(color: MyColors().cyan),
           ),
           backgroundColor: MyColors().black,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
         backgroundColor: MyColors().black,
         //call the method to load actor and show

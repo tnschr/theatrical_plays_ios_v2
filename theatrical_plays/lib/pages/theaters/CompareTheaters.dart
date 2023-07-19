@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:theatrical_plays/models/ChartTheater.dart';
@@ -79,12 +80,12 @@ class _CompareTheatersState extends State<CompareTheaters> {
     return Scaffold(
       appBar: AppBar(
         // ignore: deprecated_member_use
-        brightness: Brightness.dark,
         title: Text(
           'Theater views',
           style: TextStyle(color: MyColors().cyan),
         ),
         backgroundColor: MyColors().black,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       backgroundColor: MyColors().black,
       body: SfCircularChart(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:theatrical_plays/pages/home/LoadingHomeScreen.dart';
 import 'package:theatrical_plays/pages/home/LoginScreen.dart';
@@ -39,7 +40,6 @@ class _HomeState extends State<Home> {
       //initiallize appbar options and colors
       appBar: AppBar(
         // ignore: deprecated_member_use
-        brightness: Brightness.dark,
         title: Text(
           'Theatrical analytics',
           style: TextStyle(color: MyColors().cyan),
@@ -52,6 +52,7 @@ class _HomeState extends State<Home> {
               })
         ],
         backgroundColor: MyColors().black,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       //bottom navigation bar size colors an snake shape
       bottomNavigationBar: SnakeNavigationBar.color(

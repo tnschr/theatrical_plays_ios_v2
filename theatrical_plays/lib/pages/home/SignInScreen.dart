@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:theatrical_plays/pages/home/LoginScreen.dart';
 import 'package:theatrical_plays/using/Constants.dart';
@@ -19,12 +20,12 @@ class _SignInScreenState extends State<SignInScreen> {
     return Scaffold(
       appBar: AppBar(
         // ignore: deprecated_member_use
-        brightness: Brightness.dark,
         title: Text(
           'Theatrical analytics',
           style: TextStyle(color: MyColors().cyan),
         ),
         backgroundColor: MyColors().black,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       backgroundColor: MyColors().black,
       body: Padding(
