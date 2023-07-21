@@ -9,14 +9,14 @@ import 'package:theatrical_plays/using/Constants.dart';
 import 'package:theatrical_plays/using/MyColors.dart';
 
 class MoviePeopleSection extends StatefulWidget {
-  final int movieId;
+  final int? movieId;
   MoviePeopleSection(this.movieId);
   @override
   State<MoviePeopleSection> createState() => _MoviePeopleSectionState(movieId);
 }
 
 class _MoviePeopleSectionState extends State<MoviePeopleSection> {
-  int movieId;
+  int? movieId;
   _MoviePeopleSectionState(this.movieId);
 
   List<RelatedActor> relatedActors = [];
@@ -56,6 +56,7 @@ class _MoviePeopleSectionState extends State<MoviePeopleSection> {
     } on Exception {
       print('error data');
     }
+    throw '';
   }
 
   @override
@@ -105,7 +106,7 @@ class _MoviePeopleSectionState extends State<MoviePeopleSection> {
                         title: Text(
                           relatedActors[index].fullName +
                               " - " +
-                              relatedActors[index].role,
+                              relatedActors[index].role!,
                           style: TextStyle(color: MyColors().cyan),
                         ),
                       );

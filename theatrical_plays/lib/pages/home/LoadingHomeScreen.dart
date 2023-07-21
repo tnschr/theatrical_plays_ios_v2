@@ -52,11 +52,12 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
           }
         }
       }
-      print("movies: " + movies[0].title);
+      print("movies: " + movies[0].title!);
       return movies;
     } on Exception {
       print('error data');
     }
+    throw '';
   }
 
   // ignore: missing_return
@@ -96,6 +97,7 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
     } on Exception catch (e) {
       print('error data: $e');
     }
+    throw '';
   }
 
   // ignore: missing_return
@@ -120,11 +122,12 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
           counter++;
         }
       }
-      print("theaters: " + theaters[0].title);
+      print("theaters: " + theaters[0].title!);
       return theaters;
     } on Exception {
       print('error data');
     }
+    throw '';
   }
 
   @override

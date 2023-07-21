@@ -15,13 +15,13 @@ class Theaters extends StatefulWidget {
 }
 
 class _TheatersState extends State<Theaters> {
-  List<Theater> theaters = [];
+  List<Theater>? theaters = [];
   _TheatersState({this.theaters});
   String query = '';
   List<Theater> theatersToSearch = [];
   List<Theater> selectedTheaters = [];
   void initState() {
-    theatersToSearch = List.from(theaters);
+    theatersToSearch = List.from(theaters!);
     super.initState();
   }
 
@@ -38,7 +38,7 @@ class _TheatersState extends State<Theaters> {
                 onChanged: searchTheaters),
             Expanded(
               child: ListView.builder(
-                  itemCount: theaters.length,
+                  itemCount: theaters!.length,
                   itemBuilder: (context, index) {
                     return ListTile(
                       onTap: () {
@@ -47,7 +47,7 @@ class _TheatersState extends State<Theaters> {
                             //open the tapped item
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    TheaterInfo(theaters[index].id)));
+                                    TheaterInfo(theaters![index].id)));
                       },
                       leading: Padding(
                         padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
@@ -59,14 +59,14 @@ class _TheatersState extends State<Theaters> {
                         ),
                       ),
                       title: Text(
-                        theaters[index].title,
+                        theaters![index].title!,
                         style: TextStyle(color: MyColors().cyan),
                       ),
                       subtitle: Text(
-                        theaters[index].address,
+                        theaters![index].address!,
                         style: TextStyle(color: MyColors().white),
                       ),
-                      trailing: theaters[index].isSelected
+                      trailing: theaters![index].isSelected!
                           ? Icon(
                               Icons.check_circle,
                               color: MyColors().cyan,
@@ -77,14 +77,14 @@ class _TheatersState extends State<Theaters> {
                             ),
                       onLongPress: () {
                         setState(() {
-                          theaters[index].isSelected =
-                              !theaters[index].isSelected;
+                          theaters![index].isSelected =
+                              !theaters![index].isSelected!;
                           print("Clicked");
-                          if (theaters[index].isSelected == true) {
-                            selectedTheaters.add(theaters[index]);
-                          } else if (theaters[index].isSelected == false) {
+                          if (theaters![index].isSelected == true) {
+                            selectedTheaters.add(theaters![index]);
+                          } else if (theaters![index].isSelected == false) {
                             selectedTheaters.removeWhere(
-                                (element) => element.id == theaters[index].id);
+                                (element) => element.id == theaters![index].id);
                           }
                         });
                       },
@@ -139,10 +139,10 @@ class _TheatersState extends State<Theaters> {
                                     removeList.add(item);
                                   });
                                   removeList.forEach((removeItem) {
-                                    for (var theater in theaters) {
+                                    for (var theater in theaters!) {
                                       if (theater.id == removeItem.id) {
                                         theater.isSelected =
-                                            !theater.isSelected;
+                                            !theater.isSelected!;
                                       }
                                     }
                                   });
@@ -161,7 +161,7 @@ class _TheatersState extends State<Theaters> {
 
   Future searchTheaters(String query) async {
     final search = theatersToSearch.where((theater) {
-      final searchActors = theater.title.toLowerCase();
+      final searchActors = theater.title!.toLowerCase();
       final searchLower = query.toLowerCase();
 
       return searchActors.contains(searchLower);

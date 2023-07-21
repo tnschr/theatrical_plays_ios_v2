@@ -36,7 +36,7 @@ class _LoadingTheatersState extends State<LoadingTheaters> {
         theaters.add(theater);
       }
       return theaters.where((theater) {
-        final movietitleToLowerCase = theater.title.toLowerCase();
+        final movietitleToLowerCase = theater.title!.toLowerCase();
         final queryToLowerCase = query.toLowerCase();
 
         return movietitleToLowerCase.contains(queryToLowerCase);
@@ -44,6 +44,7 @@ class _LoadingTheatersState extends State<LoadingTheaters> {
     } on Exception {
       print('error data');
     }
+    throw '';
   }
 
   @override

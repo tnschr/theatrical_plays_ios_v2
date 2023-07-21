@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextButton(
                     child: Text(
-                      'Sign up',
+                      'Sign in',
                       style: TextStyle(fontSize: 20, color: MyColors().cyan),
                     ),
                     onPressed: () {
@@ -131,16 +131,14 @@ class _LoginScreenState extends State<LoginScreen> {
   doLogin(email, password) async {
     try {
       Uri uri = Uri.parse(
-          "http://${Constants().hostName}:7042/api/users/login?email=$email&password=$password");
+          "http://${Constants().hostName}:8080/api/users/login?email=$email&password=$password");
       Response response =
           await get(uri, headers: {"Accept": "application/json"});
       if (response.statusCode == 200) {
         AuthorizationStore.writeToStore(
             'authorization', response.headers['authorization']);
-        if (AuthorizationStore.getStoreValue('authorization') != null) {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Home()));
-        }
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Home()));
       } else if (response.statusCode == 401) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(

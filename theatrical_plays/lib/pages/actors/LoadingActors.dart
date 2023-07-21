@@ -49,6 +49,7 @@ class _LoadingActorsState extends State<LoadingActors> {
     } on Exception catch (e) {
       print('error data: $e');
     }
+    throw '';
   }
 
   @override

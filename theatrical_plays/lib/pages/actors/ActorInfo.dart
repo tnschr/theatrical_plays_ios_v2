@@ -20,8 +20,8 @@ class ActorInfo extends StatefulWidget {
 }
 
 class _ActorInfoState extends State<ActorInfo> {
-  int actorId;
-  Actor actor;
+  int? actorId;
+  late Actor actor;
   _ActorInfoState({this.actorId});
 
   // method for load the actor with the id
@@ -46,6 +46,7 @@ class _ActorInfoState extends State<ActorInfo> {
     } on Exception {
       print('error data');
     }
+    throw '';
   }
 
   @override

@@ -49,6 +49,7 @@ class _LoadingMoviesState extends State<LoadingMovies> {
     } on Exception {
       print('error data');
     }
+    throw '';
   }
 
   @override

@@ -11,7 +11,7 @@ import 'actors/LoadingActors.dart';
 import 'movies/LoadingMovies.dart';
 
 class Home extends StatefulWidget {
-  static _HomeState of(BuildContext context) =>
+  static _HomeState? of(BuildContext context) =>
       context.findAncestorStateOfType<_HomeState>();
 
   @override
@@ -21,7 +21,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   //sbake bottom nav bar options initiallization
   SnakeShape snakeShape = SnakeShape.indicator;
-  int _selectedItemPosition = 0;
+  int? _selectedItemPosition = 0;
   //bottom nav bar screens
   final List<Widget> screens = [
     LoadingHomeScreen(),
@@ -66,7 +66,7 @@ class _HomeState extends State<Home> {
         unselectedItemColor: Colors.white,
         showUnselectedLabels: true,
         showSelectedLabels: true,
-        currentIndex: _selectedItemPosition,
+        currentIndex: _selectedItemPosition!,
         onTap: (index) {
           setState(() {
             _selectedItemPosition = index;
@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
   }
 
   void setBottomNav(page) {
-    int index;
+    int? index;
     if (page == 'Actors') {
       index = 1;
     } else if (page == 'Movies') {
@@ -109,7 +109,7 @@ class _HomeState extends State<Home> {
     }
     setState(() {
       _selectedItemPosition = index;
-      controller.jumpToPage(index);
+      controller.jumpToPage(index!);
     });
   }
 

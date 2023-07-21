@@ -13,12 +13,12 @@ class Actors extends StatefulWidget {
 }
 
 class _ActorsState extends State<Actors> {
-  List<Actor> actors = [];
+  List<Actor>? actors = [];
   String query = '';
   _ActorsState({this.actors});
   List<Actor> actorsToSearch = [];
   void initState() {
-    actorsToSearch = List.from(actors);
+    actorsToSearch = List.from(actors!);
     super.initState();
   }
 
@@ -31,7 +31,7 @@ class _ActorsState extends State<Actors> {
           buildSearch(),
           Expanded(
             child: ListView.builder(
-                itemCount: actors.length,
+                itemCount: actors!.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () {
@@ -39,17 +39,17 @@ class _ActorsState extends State<Actors> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  ActorInfo(actors[index].id)));
+                                  ActorInfo(actors![index].id)));
                     },
                     leading: Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
                       child: CircleAvatar(
                         radius: 30.0,
-                        backgroundImage: NetworkImage(actors[index].image),
+                        backgroundImage: NetworkImage(actors![index].image),
                       ),
                     ),
                     title: Text(
-                      actors[index].fullName,
+                      actors![index].fullName,
                       style: TextStyle(color: MyColors().cyan),
                     ),
                   );

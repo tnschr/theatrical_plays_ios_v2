@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:theatrical_plays/using/MyColors.dart';
 
 class ProfileWidget extends StatelessWidget {
-  final String imagePath;
-  final String actorName;
+  final String? imagePath;
+  final String? actorName;
   const ProfileWidget({key, this.imagePath, this.actorName}) : super(key: key);
 
   @override
@@ -17,7 +17,7 @@ class ProfileWidget extends StatelessWidget {
             child: Padding(
           padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Text(
-            actorName,
+            actorName!,
             style: TextStyle(color: MyColors().cyan, fontSize: 22),
           ),
         )),
@@ -27,7 +27,7 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    final image = NetworkImage(imagePath);
+    final image = NetworkImage(imagePath!);
 
     return ClipOval(
       child: Material(

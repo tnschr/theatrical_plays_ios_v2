@@ -83,7 +83,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             side: BorderSide(color: MyColors().cyan)),
                         textStyle: TextStyle(color: MyColors().cyan)),
                     child: Text(
-                      'Sign up',
+                      'Sign in',
                       style: TextStyle(color: MyColors().cyan),
                     ),
                     onPressed: () {
@@ -123,11 +123,11 @@ class _SignInScreenState extends State<SignInScreen> {
           password.toString().isNotEmpty &&
           password != null) {
         Uri uri =
-            Uri.parse("https://${Constants().hostName}:7042/api/user/register");
+            Uri.parse("http://${Constants().hostName}:8080/api/users/register");
         final json = jsonEncode({
           "email": "$email",
           "password": "$password",
-          "role": ["2"]
+          "authorities": ["USER"]
         });
         Response response = await post(uri,
             headers: {
@@ -138,7 +138,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
         if (response.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("Succesfull Sign up!"),
+            content: Text("Succesfull Sign in"),
           ));
           Navigator.pop(
               context, MaterialPageRoute(builder: (context) => LoginScreen()));
@@ -148,23 +148,10 @@ class _SignInScreenState extends State<SignInScreen> {
               .showSnackBar(SnackBar(content: Text("Not valid credentials")));
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-            "There is an empty field",
-            textAlign: TextAlign.center,
-          ),
-        ));
+        print("Empty Field");
       }
-    } on Exception catch (e) {
-      String errorMessage = e.toString();
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          errorMessage,
-          textAlign: TextAlign.center,
-        ),
-      ));
-      print(errorMessage);
+    } on Exception {
+      print('error to sign in');
     }
   }
 }

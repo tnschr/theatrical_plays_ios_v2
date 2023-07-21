@@ -22,9 +22,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Movie> homeMovies = [];
-  List<Actor> homeActors = [];
-  List<Theater> homeTheaters = [];
+  List<Movie>? homeMovies = [];
+  List<Actor>? homeActors = [];
+  List<Theater>? homeTheaters = [];
   _HomeScreenState({this.homeMovies, this.homeActors, this.homeTheaters});
   List<Actor> homescreenActors = [
     Actor('https://image.tmdb.org/t/p/w300/nv5TR9NiELEGPJUQqVLEqZzcGZb.jpg',
@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(color: MyColors().cyan)), // <-- Text
                 backgroundColor: MyColors().gray,
                 onPressed: () {
-                  Home.of(context).setBottomNav('Actors');
+                  Home.of(context)?.setBottomNav('Actors');
                 },
               ),
             ),
@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(color: MyColors().cyan)), // <-- Text
                 backgroundColor: MyColors().gray,
                 onPressed: () {
-                  Home.of(context).setBottomNav('Movies');
+                  Home.of(context)?.setBottomNav('Movies');
                 },
               ),
             ),
@@ -149,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(color: MyColors().cyan)), // <-- Text
                 backgroundColor: MyColors().gray,
                 onPressed: () {
-                  Home.of(context).setBottomNav('Theaters');
+                  Home.of(context)?.setBottomNav('Theaters');
                 },
               ),
             ),
@@ -207,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: CircleAvatar(
                   radius: 30.0,
                   backgroundImage:
-                      NetworkImage(homescreenMovies[index].mediaUrl),
+                      NetworkImage(homescreenMovies[index].mediaUrl!),
                 ),
               ),
             ),
@@ -221,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               title: Center(
                 child: Text(
-                  homescreenMovies[index].title,
+                  homescreenMovies[index].title!,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: MyColors().cyan, fontSize: 14),
                 ),
@@ -255,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               title: Center(
                 child: Text(
-                  homescreenTheaters[index].title,
+                  homescreenTheaters[index].title!,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: MyColors().cyan, fontSize: 14),
                 ),

@@ -6,8 +6,8 @@ import 'package:theatrical_plays/models/Theater.dart';
 import 'package:theatrical_plays/using/MyColors.dart';
 
 class TheaterProfile extends StatelessWidget {
-  final Theater theater;
-  const TheaterProfile({key, required this.theater}) : super(key: key);
+  final Theater? theater;
+  const TheaterProfile({key, this.theater}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class TheaterProfile extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Text(
-            theater.title,
+            theater!.title!,
             style: TextStyle(color: MyColors().cyan, fontSize: 18),
           ),
         ),
@@ -25,7 +25,7 @@ class TheaterProfile extends StatelessWidget {
       Padding(
         padding: EdgeInsets.fromLTRB(10, 5, 10, 15),
         child: Text(
-          "Address: " + theater.address,
+          "Address: " + theater!.address!,
           style: TextStyle(color: MyColors().cyan, fontSize: 18),
         ),
       ),
@@ -34,7 +34,7 @@ class TheaterProfile extends StatelessWidget {
             style: TextStyle(color: MyColors().cyan, fontSize: 18)), // <-- Text
         backgroundColor: MyColors().gray,
         onPressed: () {
-          _launchMap(theater.address);
+          _launchMap(theater!.address);
         },
       )
     ]);
@@ -57,10 +57,10 @@ class TheaterProfile extends StatelessWidget {
     );
   }
 
-  _launchMap(String address) async {
+  _launchMap(String? address) async {
     if (Platform.isIOS) {
       try {
-        await MapsLauncher.launchQuery(address);
+        await MapsLauncher.launchQuery(address!);
       } catch (e) {
         print(e);
       }

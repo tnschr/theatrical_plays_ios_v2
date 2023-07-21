@@ -65,6 +65,7 @@ class _BodyProfileWidgetState extends State<BodyProfileWidget> {
     } on Exception {
       print('error data');
     }
+    return productions;
   }
 
   @override
@@ -102,13 +103,13 @@ class _BodyProfileWidgetState extends State<BodyProfileWidget> {
                           child: CircleAvatar(
                             radius: 30.0,
                             backgroundImage:
-                                NetworkImage(productions[index].mediaUrl),
+                                NetworkImage(productions[index].mediaUrl!),
                           ),
                         ),
                         title: Text(
-                          productions[index].title +
+                          productions[index].title! +
                               " - " +
-                              productions[index].role,
+                              productions[index].role!,
                           style: TextStyle(color: MyColors().cyan),
                         ),
                       );

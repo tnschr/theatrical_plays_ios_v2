@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:theatrical_plays/using/MyColors.dart';
 
 class SearchWidget extends StatefulWidget {
-  final String text;
-  final ValueChanged<String> onChanged;
-  final String hintText;
+  final String? text;
+  final ValueChanged<String>? onChanged;
+  final String? hintText;
 
   const SearchWidget({
-    required Key key,
-    required this.text,
-    required this.onChanged,
-    required this.hintText,
+    Key? key,
+    this.text,
+    this.onChanged,
+    this.hintText,
   }) : super(key: key);
 
   @override
@@ -24,7 +24,7 @@ class _SearchWidgetState extends State<SearchWidget> {
   Widget build(BuildContext context) {
     final styleActive = TextStyle(color: MyColors().cyan);
     final styleHint = TextStyle(color: MyColors().gray);
-    final style = widget.text.isEmpty ? styleHint : styleActive;
+    final style = widget.text!.isEmpty ? styleHint : styleActive;
 
     return Container(
       height: 42,
@@ -39,12 +39,12 @@ class _SearchWidgetState extends State<SearchWidget> {
         controller: controller,
         decoration: InputDecoration(
           icon: Icon(Icons.search, color: MyColors().cyan),
-          suffixIcon: widget.text.isNotEmpty
+          suffixIcon: widget.text!.isNotEmpty
               ? GestureDetector(
                   child: Icon(Icons.close, color: MyColors().cyan),
                   onTap: () {
                     controller.clear();
-                    widget.onChanged('');
+                    widget.onChanged!('');
                     FocusScope.of(context).requestFocus(FocusNode());
                   },
                 )

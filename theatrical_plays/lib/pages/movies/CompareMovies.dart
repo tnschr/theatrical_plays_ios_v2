@@ -23,18 +23,18 @@ class CompareMovies extends StatefulWidget {
 }
 
 class _CompareMoviesState extends State<CompareMovies> {
-  List<Movie> selectedMovies = [];
-  _CompareMoviesState({required this.selectedMovies});
+  List<Movie>? selectedMovies = [];
+  _CompareMoviesState({this.selectedMovies});
 
-  List<CompMovie> compareMovies = [];
-  CompMovie compareMovie;
+  List<CompMovie?> compareMovies = [];
+  CompMovie? compareMovie;
 
   List<ChartCompMovie> chartMovies = [];
   // ignore: missing_return
-  Future<List<CompMovie>> loadCompareMovie() async {
-    int movieId;
+  Future<List<CompMovie?>> loadCompareMovie() async {
+    int? movieId;
     try {
-      for (var item in selectedMovies) {
+      for (var item in selectedMovies!) {
         movieId = item.id;
         print(item.id);
         Uri uri = Uri.parse(
@@ -49,7 +49,7 @@ class _CompareMoviesState extends State<CompareMovies> {
         if (jsonData['data'].toString() == '[]') {
           print("Null data");
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(item.title + " has no event."),
+            content: Text(item.title! + " has no event."),
           ));
           break;
         } else {
@@ -62,6 +62,7 @@ class _CompareMoviesState extends State<CompareMovies> {
     } on Exception {
       print('error data');
     }
+    throw '';
   }
 
   @override
@@ -70,7 +71,7 @@ class _CompareMoviesState extends State<CompareMovies> {
         child: FutureBuilder(
             future: loadCompareMovie(),
             builder: (BuildContext context,
-                AsyncSnapshot<List<CompMovie>> snapshot) {
+                AsyncSnapshot<List<CompMovie?>> snapshot) {
               if (!snapshot.hasData) {
                 return Loading();
               } else if (snapshot.hasError) {
@@ -90,7 +91,7 @@ class _CompareMoviesState extends State<CompareMovies> {
   Widget chartBuilder() {
     print(chartMovies[0].title);
     print(chartMovies[0].priceRange.toString());
-    print(compareMovies[0].priceRange.toString());
+    print(compareMovies[0]!.priceRange.toString());
     return Scaffold(
       appBar: AppBar(
         // ignore: deprecated_member_use
@@ -126,7 +127,7 @@ class _CompareMoviesState extends State<CompareMovies> {
     );
   }
 
-  castPrice(List<CompMovie> compareMovies) {
+  castPrice(List<CompMovie?> compareMovies) {
     var doubleRE = RegExp(r"-?(?:\d*\.)?\d+(?:[eE][+-]?\d+)?");
     var clearPrice;
     var colors = [Colors.red, Colors.teal, Colors.orange, Colors.brown];
@@ -134,9 +135,9 @@ class _CompareMoviesState extends State<CompareMovies> {
     print("Clear price values");
     for (var item in compareMovies) {
       //clear the number values from priceRenge
-      item.priceRange = item.priceRange.replaceAll(',', '.');
+      item!.priceRange = item.priceRange!.replaceAll(',', '.');
       var numbers = doubleRE
-          .allMatches(item.priceRange)
+          .allMatches(item.priceRange!)
           .map((m) => double.parse(m[0]!))
           .toList();
       if (numbers.isNotEmpty) {

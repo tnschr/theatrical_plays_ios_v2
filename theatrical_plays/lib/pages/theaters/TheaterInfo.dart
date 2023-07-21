@@ -12,7 +12,7 @@ import 'package:theatrical_plays/using/Loading.dart';
 import 'package:theatrical_plays/using/MyColors.dart';
 
 class TheaterInfo extends StatefulWidget {
-  final int theaterId;
+  final int? theaterId;
   TheaterInfo(this.theaterId);
   @override
   State<TheaterInfo> createState() => _TheaterInfoState(theaterId: theaterId);
@@ -20,8 +20,8 @@ class TheaterInfo extends StatefulWidget {
 
 class _TheaterInfoState extends State<TheaterInfo> {
   _TheaterInfoState({this.theaterId});
-  int theaterId;
-  Theater theater;
+  int? theaterId;
+  Theater? theater;
 
   // ignore: missing_return
   Future<Theater> loadTheater() async {
@@ -40,6 +40,7 @@ class _TheaterInfoState extends State<TheaterInfo> {
     } on Exception {
       print('error data');
     }
+    throw '';
   }
 
   @override

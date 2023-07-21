@@ -16,13 +16,13 @@ class Movies extends StatefulWidget {
 }
 
 class _MoviesState extends State<Movies> {
-  List<Movie> movies = [];
+  List<Movie>? movies = [];
   _MoviesState({this.movies});
   List<Movie> moviesToSearch = [];
   String query = '';
   List<Movie> selectedMovies = [];
   void initState() {
-    moviesToSearch = List.from(movies);
+    moviesToSearch = List.from(movies!);
     super.initState();
   }
 
@@ -36,7 +36,7 @@ class _MoviesState extends State<Movies> {
             buildSearch(),
             Expanded(
               child: ListView.builder(
-                itemCount: movies.length,
+                itemCount: movies!.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                       onTap: () {
@@ -44,7 +44,7 @@ class _MoviesState extends State<Movies> {
                             context,
                             CupertinoPageRoute(
                                 builder: (context) =>
-                                    MovieInfo(movies[index].id)));
+                                    MovieInfo(movies![index].id)));
                       },
                       leading: Padding(
                         padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
@@ -52,16 +52,16 @@ class _MoviesState extends State<Movies> {
                           radius: 30.0,
                           backgroundColor: Colors.white,
                           backgroundImage:
-                              NetworkImage('${movies[index].mediaUrl}'),
+                              NetworkImage('${movies![index].mediaUrl}'),
                         ),
                       ),
                       title: Text(
-                        movies[index].title,
+                        movies![index].title!,
                         style: TextStyle(color: MyColors().cyan),
                       ),
-                      subtitle: Text("Duration: ${movies[index].duration}",
+                      subtitle: Text("Duration: ${movies![index].duration}",
                           style: TextStyle(color: MyColors().white)),
-                      trailing: movies[index].isSelected
+                      trailing: movies![index].isSelected
                           ? Icon(
                               Icons.check_circle,
                               color: MyColors().cyan,
@@ -72,13 +72,13 @@ class _MoviesState extends State<Movies> {
                             ),
                       onLongPress: () {
                         setState(() {
-                          movies[index].isSelected = !movies[index].isSelected;
+                          movies![index].isSelected = !movies![index].isSelected;
                           print("Selected");
-                          if (movies[index].isSelected == true) {
-                            selectedMovies.add(movies[index]);
-                          } else if (movies[index].isSelected == false) {
+                          if (movies![index].isSelected == true) {
+                            selectedMovies.add(movies![index]);
+                          } else if (movies![index].isSelected == false) {
                             selectedMovies.removeWhere(
-                                (element) => element.id == movies[index].id);
+                                (element) => element.id == movies![index].id);
                           }
                         });
                       });
@@ -139,7 +139,7 @@ class _MoviesState extends State<Movies> {
                                     removeList.add(item);
                                   });
                                   removeList.forEach((removeItem) {
-                                    for (var movie in movies) {
+                                    for (var movie in movies!) {
                                       if (movie.id == removeItem.id) {
                                         movie.isSelected = !movie.isSelected;
                                       }
@@ -164,7 +164,7 @@ class _MoviesState extends State<Movies> {
 
   Future searchMovies(String query) async {
     final search = moviesToSearch.where((movie) {
-      final searchMovies = movie.title.toLowerCase();
+      final searchMovies = movie.title!.toLowerCase();
       final searchLower = query.toLowerCase();
 
       return searchMovies.contains(searchLower);

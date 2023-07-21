@@ -14,15 +14,15 @@ import 'MoviePeopleSection.dart';
 
 // ignore: must_be_immutable
 class MovieInfo extends StatefulWidget {
-  final int movieId;
+  final int? movieId;
   MovieInfo(this.movieId);
   @override
   State<MovieInfo> createState() => _MovieInfoState(movieId: movieId);
 }
 
 class _MovieInfoState extends State<MovieInfo> {
-  int movieId;
-  Movie movie;
+  int? movieId;
+  Movie? movie;
   _MovieInfoState({this.movieId});
 
   // method for load the actor with the id
@@ -52,6 +52,7 @@ class _MovieInfoState extends State<MovieInfo> {
     } on Exception {
       print('error data');
     }
+    throw '';
   }
 
   @override
@@ -89,7 +90,7 @@ class _MovieInfoState extends State<MovieInfo> {
                           style:
                               TextStyle(color: MyColors().cyan, fontSize: 20)),
                     )),
-                    MoviePeopleSection(movie.id),
+                    MoviePeopleSection(movie!.id),
                   ],
                 );
               }

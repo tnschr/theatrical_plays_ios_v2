@@ -21,17 +21,17 @@ class CompareTheaters extends StatefulWidget {
 }
 
 class _CompareTheatersState extends State<CompareTheaters> {
-  List<Theater> selectedTheaters = [];
+  List<Theater>? selectedTheaters = [];
   _CompareTheatersState({this.selectedTheaters});
 
-  List<ChartTheater> chartTheaters = [];
-  ChartTheater chartTheater;
+  List<ChartTheater?> chartTheaters = [];
+  ChartTheater? chartTheater;
 
   // ignore: missing_return
-  Future<List<ChartTheater>> loadChartTheaters() async {
+  Future<List<ChartTheater?>> loadChartTheaters() async {
     var theaterId;
     try {
-      for (var item in selectedTheaters) {
+      for (var item in selectedTheaters!) {
         theaterId = item.id;
         print(item.id);
         Uri uri = Uri.parse(
@@ -57,6 +57,7 @@ class _CompareTheatersState extends State<CompareTheaters> {
     } on Exception {
       print('error data');
     }
+    throw '';
   }
 
   @override
@@ -65,7 +66,7 @@ class _CompareTheatersState extends State<CompareTheaters> {
         child: FutureBuilder(
             future: loadChartTheaters(),
             builder: (BuildContext context,
-                AsyncSnapshot<List<ChartTheater>> snapshot) {
+                AsyncSnapshot<List<ChartTheater?>> snapshot) {
               if (!snapshot.hasData) {
                 return Loading();
               } else if (snapshot.hasError) {
@@ -94,10 +95,10 @@ class _CompareTheatersState extends State<CompareTheaters> {
             overflowMode: LegendItemOverflowMode.wrap,
             textStyle: TextStyle(color: MyColors().white)),
         series: <CircularSeries>[
-          PieSeries<ChartTheater, String>(
+          PieSeries<ChartTheater?, String>(
               dataSource: chartTheaters,
-              xValueMapper: (ChartTheater theater, _) => theater.title,
-              yValueMapper: (ChartTheater theater, _) => theater.eventsNumber,
+              xValueMapper: (ChartTheater? theater, _) => theater!.title,
+              yValueMapper: (ChartTheater? theater, _) => theater!.eventsNumber,
               dataLabelSettings: DataLabelSettings(
                   isVisible: true,
                   textStyle: TextStyle(color: MyColors().white)))

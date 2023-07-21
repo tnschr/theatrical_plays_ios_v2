@@ -9,7 +9,7 @@ import 'package:theatrical_plays/using/Constants.dart';
 import 'package:theatrical_plays/using/MyColors.dart';
 
 class TheaterMovieSection extends StatefulWidget {
-  final int theaterId;
+  final int? theaterId;
   TheaterMovieSection(this.theaterId);
   @override
   State<TheaterMovieSection> createState() =>
@@ -17,7 +17,7 @@ class TheaterMovieSection extends StatefulWidget {
 }
 
 class _TheaterMovieSectionState extends State<TheaterMovieSection> {
-  int theaterId;
+  int? theaterId;
   List<Movie> relatedMovies = [];
   _TheaterMovieSectionState(this.theaterId);
 
@@ -54,6 +54,7 @@ class _TheaterMovieSectionState extends State<TheaterMovieSection> {
     } on Exception {
       print('error data');
     }
+    throw '';
   }
 
   @override
@@ -96,11 +97,11 @@ class _TheaterMovieSectionState extends State<TheaterMovieSection> {
                           child: CircleAvatar(
                             radius: 30.0,
                             backgroundImage:
-                                NetworkImage(relatedMovies[index].mediaUrl),
+                                NetworkImage(relatedMovies[index].mediaUrl!),
                           ),
                         ),
                         title: Text(
-                          relatedMovies[index].title,
+                          relatedMovies[index].title!,
                           style: TextStyle(color: MyColors().cyan),
                         ),
                       );
