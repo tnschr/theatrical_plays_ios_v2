@@ -82,6 +82,7 @@ class _MovieProfile extends State<MovieProfile> {
   }
 
   Widget buildImage() {
+    // ignore: unused_local_variable
     final image =
         NetworkImage("https://thumbs.dreamstime.com/z/print-178440812.jpg");
 
