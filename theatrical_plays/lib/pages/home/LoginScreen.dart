@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -130,10 +133,31 @@ class _LoginScreenState extends State<LoginScreen> {
 
   doLogin(email, password) async {
     try {
-      Uri uri = Uri.parse(
-          "http://${Constants().hostName}:7042/api/user/login?email=$email&password=$password");
-      Response response =
-          await get(uri, headers: {"Accept": "application/json"});
+      Uri uri =
+          Uri.parse("https://${Constants().hostName}:7042/api/user/login");
+      // Create a new HttpClient and allow self-signed certificates (for debugging only)
+      HttpClient httpClient = HttpClient();
+      httpClient.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+
+// Prepare the request body
+      Map<String, dynamic> requestBody = {
+        'email': email,
+        'password': password,
+      };
+
+      // Convert the request body to a JSON string
+      String requestBodyJson = jsonEncode(requestBody);
+
+      // Make the POST request using the custom HttpClient
+      HttpClientRequest request = await httpClient.postUrl(uri);
+      request.headers.add('Content-Type', 'application/json');
+      request.write(requestBodyJson);
+
+      // Send the request and get the response
+      HttpClientResponse response = await request.close();
+
+      // Read the response
       if (response.statusCode == 200) {
         AuthorizationStore.writeToStore(
             'authorization', response.headers['authorization']);
@@ -147,6 +171,10 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ));
       }
+      // ignore: nullable_type_in_catch_clause
+    } on HttpException catch (e) {
+      // Handle HttpException
+      print("HttpException occurred: $e");
       // } on Exception {
       //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       //     content: Text(
