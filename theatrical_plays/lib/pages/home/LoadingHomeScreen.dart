@@ -57,7 +57,6 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
     } on Exception {
       print('error data');
     }
-    throw '';
   }
 
   // ignore: missing_return
