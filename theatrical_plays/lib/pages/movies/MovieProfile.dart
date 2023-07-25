@@ -97,7 +97,7 @@ class _MovieProfile extends State<MovieProfile> {
 
   _launchURL(String? query) async {
     final url = 'https://www.youtube.com/results?search_query=$query';
-    // ignore: deprecated_member_use
+    // ignore: deprecated_member_use, unnecessary_null_comparison
     if (await canLaunch(url) != null) {
       // ignore: deprecated_member_use
       launchUrl(Uri.parse(url));

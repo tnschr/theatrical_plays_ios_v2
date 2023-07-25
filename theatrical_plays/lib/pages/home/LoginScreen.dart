@@ -105,12 +105,12 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 children: <Widget>[
                   Text(
-                    'Does not have account?',
+                    'Don\'t have an account?',
                     style: TextStyle(color: MyColors().white),
                   ),
                   TextButton(
                     child: Text(
-                      'Sign in',
+                      'Sign up',
                       style: TextStyle(fontSize: 20, color: MyColors().cyan),
                     ),
                     onPressed: () {
@@ -131,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
   doLogin(email, password) async {
     try {
       Uri uri = Uri.parse(
-          "http://${Constants().hostName}:8080/api/users/login?email=$email&password=$password");
+          "http://${Constants().hostName}:7042/api/user/login?email=$email&password=$password");
       Response response =
           await get(uri, headers: {"Accept": "application/json"});
       if (response.statusCode == 200) {
@@ -147,10 +147,20 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ));
       }
-    } on Exception {
+      // } on Exception {
+      //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      //     content: Text(
+      //       "Error to login. Check internet connection and VPN.",
+      //       textAlign: TextAlign.center,
+      //     ),
+    } catch (e) {
+      // Handle any exception that occurred during the execution of the try block
+      // Print the exception message to see the details
+      print("Exception occurred: $e");
+
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-          "Error to login. Check internet connection and VPN.",
+          "An unexpected error occurred. Please try again later.",
           textAlign: TextAlign.center,
         ),
       ));
