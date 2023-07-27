@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:theatrical_plays/models/Actor.dart';
@@ -26,7 +27,7 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
     loadHomeTheaters();
     try {
       Uri uri =
-          Uri.parse("http://${Constants().hostName}:8080/api/productions");
+          Uri.parse("https://${Constants().hostName}:7042/api/productions");
       Response data = await get(uri, headers: {
         "Accept": "application/json",
         "authorization":
@@ -57,6 +58,7 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
     } on Exception {
       print('error data');
     }
+    return movies;
   }
 
   // ignore: missing_return
@@ -64,34 +66,42 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
     // loadHomeMovies();
     // loadHomeTheaters();
     try {
-      Uri uri = Uri.parse("http://${Constants().hostName}:8080/api/people");
-      Response data = await get(uri, headers: {
-        "Accept": "application/json",
-        "authorization":
-            "${await AuthorizationStore.getStoreValue("authorization")}"
-      });
-      if (data.statusCode == 200) {
-        var jsonData = jsonDecode(data.body);
+      final uri = Uri.parse("https://${Constants().hostName}:7042/api/people");
 
-        int counter = 0;
-        for (var oldActor in jsonData['data']['content']) {
-          if (oldActor['image'] != '' && oldActor['image'] != null) {
-            if (counter < 6 && oldActor['id'] != 1908) {
-              Actor actor = new Actor(
-                  oldActor['image'], oldActor['id'], oldActor['fullName']);
-              if (RegExp(
-                      r"^\s*([A-Za-zα-ωΑ-Ω]{1,}([\.,] |[-']| ))+[A-Za-zΑ-Ωα-ω]+\.?\s*$")
-                  .hasMatch(actor.fullName)) {
-                actors.add(actor);
-                counter++;
-              }
-            }
-          }
+      // Create a custom HttpClient with the bad certificate callback to ignore self-signed certificates
+      final httpClient = HttpClient()
+        ..badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+
+      // Convert the HttpClient request to a http.Request object
+      final request = await httpClient.getUrl(uri);
+
+      // Add headers to the request
+      request.headers["Accept"] = "application/json";
+      request.headers["authorization"] =
+          await AuthorizationStore.getStoreValue("authorization");
+
+      // Send the request and get the response
+      final response = await request.close();
+
+      if (response.statusCode == 200) {
+        final jsonData = await response.transform(utf8.decoder).join();
+        final parsedData = jsonDecode(jsonData);
+
+        final List<Actor> actors = [];
+
+        for (var actorData in parsedData['data']['results']) {
+          final actor = Actor(
+            actorData['id'],
+            actorData['fullname'],
+          );
+          actors.add(actor);
         }
-        print("actors: " + actors[0].fullName);
+
+        print("actors: ${actors[0].fullName}");
         return actors;
       } else {
-        print("Api status code error");
+        print("API status code error: ${response.statusCode}");
       }
     } on Exception catch (e) {
       print('error data: $e');
@@ -101,7 +111,7 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
 
   // ignore: missing_return
   Future<List<Theater>> loadHomeTheaters() async {
-    Uri uri = Uri.parse("http://${Constants().hostName}:8080/api/venues");
+    Uri uri = Uri.parse("https://${Constants().hostName}:7042/api/venues");
     Response data = await get(uri, headers: {
       "Accept": "application/json",
       "authorization":
