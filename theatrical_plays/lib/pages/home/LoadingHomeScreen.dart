@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:theatrical_plays/models/Actor.dart';
@@ -62,35 +62,68 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
   }
 
   // ignore: missing_return
+  // Future<List<Actor>> loadHomeActors() async {
+  //   // loadHomeMovies();
+  //   // loadHomeTheaters();
+  //   try {
+  //     final uri = Uri.parse("https://${Constants().hostName}:7042/api/people");
+
+  //     // Create a custom HttpClient with the bad certificate callback to ignore self-signed certificates
+  //     final httpClient = HttpClient()
+  //       ..badCertificateCallback =
+  //           (X509Certificate cert, String host, int port) => true;
+
+  //     // Convert the HttpClient request to a http.Request object
+  //     // ignore: close_sinks
+  //     final request = await httpClient.getUrl(uri);
+
+  //     // Add headers to the request
+  //     request.headers["Accept"] = "application/json";
+  //     request.headers["authorization"] =
+  //         await AuthorizationStore.getStoreValue("authorization");
+
+  //     final response = await http.get(uri, headers: headers);
+
+  //     if (response.statusCode == 200) {
+  //       final jsonData = jsonDecode(response.body);
+  //       final List<Actor> actors = [];
+
+  //       for (var actorData in jsonData['data']['results']) {
+  //         final actor = Actor(
+  //           actorData['id'],
+  //           actorData['fullname'],
+  //         );
+  //         actors.add(actor);
+  //       }
+
+  //       print("actors: ${actors[0].fullName}");
+  //       return actors;
+  //     } else {
+  //       print("API status code error: ${response.statusCode}");
+  //     }
+  //   } catch (e) {
+  //     print('error data: $e');
+  //   }
+  //   throw '';
+  // }
+
   Future<List<Actor>> loadHomeActors() async {
-    // loadHomeMovies();
-    // loadHomeTheaters();
     try {
       final uri = Uri.parse("https://${Constants().hostName}:7042/api/people");
 
-      // Create a custom HttpClient with the bad certificate callback to ignore self-signed certificates
-      final httpClient = HttpClient()
-        ..badCertificateCallback =
-            (X509Certificate cert, String host, int port) => true;
+      final headers = {
+        "Accept": "application/json",
+        "authorization":
+            await AuthorizationStore.getStoreValue("authorization"),
+      };
 
-      // Convert the HttpClient request to a http.Request object
-      final request = await httpClient.getUrl(uri);
-
-      // Add headers to the request
-      request.headers["Accept"] = "application/json";
-      request.headers["authorization"] =
-          await AuthorizationStore.getStoreValue("authorization");
-
-      // Send the request and get the response
-      final response = await request.close();
+      final response = await http.get(uri, headers: headers);
 
       if (response.statusCode == 200) {
-        final jsonData = await response.transform(utf8.decoder).join();
-        final parsedData = jsonDecode(jsonData);
-
+        final jsonData = jsonDecode(response.body);
         final List<Actor> actors = [];
 
-        for (var actorData in parsedData['data']['results']) {
+        for (var actorData in jsonData['data']['results']) {
           final actor = Actor(
             actorData['id'],
             actorData['fullname'],
@@ -103,7 +136,7 @@ class _LoadingHomeScreenState extends State<LoadingHomeScreen> {
       } else {
         print("API status code error: ${response.statusCode}");
       }
-    } on Exception catch (e) {
+    } catch (e) {
       print('error data: $e');
     }
     throw '';
