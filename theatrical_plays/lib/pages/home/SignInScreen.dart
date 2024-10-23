@@ -24,8 +24,7 @@ class _SignInScreenState extends State<SignInScreen> {
           'Theatrical analytics',
           style: TextStyle(color: MyColors().cyan),
         ),
-        backgroundColor: MyColors().black,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: MyColors().black, systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       backgroundColor: MyColors().black,
       body: Padding(
@@ -77,7 +76,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: MyColors().gray,
+                        // backgroundColor: MyColors().gray,
                         shape: new RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(30.0),
                             side: BorderSide(color: MyColors().cyan)),

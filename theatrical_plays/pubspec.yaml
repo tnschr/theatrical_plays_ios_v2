@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ^2.17.6
 
 dependencies:
   flutter:
@@ -32,6 +32,7 @@ dependencies:
   animated_splash_screen: ^1.2.0
   syncfusion_flutter_charts: ^19.4.56
   flutter_secure_storage: ^7.0.1
+  syncfusion_flutter_core: ^19.4.56
 
 flutter_icons:
   android: true

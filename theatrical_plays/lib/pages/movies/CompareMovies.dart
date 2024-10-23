@@ -14,76 +14,215 @@ import 'package:theatrical_plays/using/Loading.dart';
 import 'package:theatrical_plays/using/MyColors.dart';
 
 // ignore: must_be_immutable
+// class CompareMovies extends StatefulWidget {
+//   List<Movie> selectedMovies = [];
+//   CompareMovies(this.selectedMovies);
+//   @override
+//   State<CompareMovies> createState() =>
+//       _CompareMoviesState(selectedMovies: this.selectedMovies);
+// }
+//
+// class _CompareMoviesState extends State<CompareMovies> {
+//   List<Movie> selectedMovies = [];
+//   _CompareMoviesState({this.selectedMovies});
+//
+//   List<CompMovie> compareMovies = [];
+//   CompMovie compareMovie;
+//
+//   List<ChartCompMovie> chartMovies = [];
+//   // ignore: missing_return
+//   Future<List<CompMovie>> loadCompareMovie() async {
+//     int movieId;
+//     try {
+//       for (var item in selectedMovies) {
+//         movieId = item.id;
+//         print(item.id);
+//         Uri uri = Uri.parse(
+//             "http://${Constants().hostName}:8080/api/productions/$movieId/events");
+//         Response data = await get(uri, headers: {
+//           "Accept": "application/json",
+//           "authorization":
+//               "${await AuthorizationStore.getStoreValue("authorization")}"
+//         });
+//         var jsonData = jsonDecode(data.body);
+//
+//         if (jsonData['data'].toString() == '[]') {
+//           print("Null data");
+//           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//             content: Text(item.title + " has no event."),
+//           ));
+//           break;
+//         } else {
+//           compareMovie = new CompMovie(
+//               item.id, item.title, jsonData['data'][0]['priceRange']);
+//           compareMovies.add(compareMovie);
+//         }
+//       }
+//       return compareMovies;
+//     } on Exception {
+//       print('error data');
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//         child: FutureBuilder(
+//             future: loadCompareMovie(),
+//             builder: (BuildContext context,
+//                 AsyncSnapshot<List<CompMovie>> snapshot) {
+//               if (!snapshot.hasData) {
+//                 return Loading();
+//               } else if (snapshot.hasError) {
+//                 return Text("error loading");
+//               } else {
+//                 if (snapshot.data.isNotEmpty) {
+//                   castPrice(compareMovies);
+//                   return chartBuilder();
+//                 } else {
+//                   Navigator.pop(context);
+//                   return Container();
+//                 }
+//               }
+//             }));
+//   }
+//
+//   Widget chartBuilder() {
+//     print(chartMovies[0].title);
+//     print(chartMovies[0].priceRange.toString());
+//     print(compareMovies[0].priceRange.toString());
+//     return Scaffold(
+//       appBar: AppBar(
+//         // ignore: deprecated_member_use
+//         brightness: Brightness.dark,
+//         title: Text(
+//           'Ticket prices',
+//           style: TextStyle(color: MyColors().cyan),
+//         ),
+//         backgroundColor: MyColors().black,
+//       ),
+//       backgroundColor: MyColors().black,
+//       body: Container(
+//         child: SfCartesianChart(
+//             margin: EdgeInsets.fromLTRB(20, 30, 20, 30),
+//             series: <ChartSeries>[
+//               ColumnSeries<ChartCompMovie, String>(
+//                   dataSource: chartMovies,
+//                   borderRadius: BorderRadius.all(Radius.circular(30)),
+//                   pointColorMapper: (ChartCompMovie movie, _) =>
+//                       movie.columnColor,
+//                   xValueMapper: (ChartCompMovie movie, _) => movie.title,
+//                   yValueMapper: (ChartCompMovie movie, _) => movie.priceRange)
+//             ],
+//             tooltipBehavior: TooltipBehavior(
+//                 enable: true, header: 'Movie', format: 'point.x: point.y€'),
+//             primaryXAxis: CategoryAxis(
+//                 majorGridLines: MajorGridLines(width: 0),
+//                 axisLine: AxisLine(width: 0),
+//                 maximumLabelWidth: 90.0,
+//                 labelIntersectAction: AxisLabelIntersectAction.wrap),
+//             backgroundColor: MyColors().black),
+//       ),
+//     );
+//   }
+//
+//   castPrice(List<CompMovie> compareMovies) {
+//     var doubleRE = RegExp(r"-?(?:\d*\.)?\d+(?:[eE][+-]?\d+)?");
+//     var clearPrice;
+//     var colors = [Colors.red, Colors.teal, Colors.orange, Colors.brown];
+//     var colorCounter = 0;
+//     print("Clear price values");
+//     for (var item in compareMovies) {
+//       //clear the number values from priceRenge
+//       item.priceRange = item.priceRange.replaceAll(',', '.');
+//       var numbers = doubleRE
+//           .allMatches(item.priceRange)
+//           .map((m) => double.parse(m[0]))
+//           .toList();
+//       if (numbers.isNotEmpty) {
+//         clearPrice = numbers.reduce(max);
+//       } else {
+//         clearPrice = 12.0;
+//       }
+//       if (clearPrice == null) {
+//         clearPrice = 11.0;
+//       }
+//
+//       ChartCompMovie chartCompMovie = new ChartCompMovie(
+//           item.id, item.title, clearPrice, item.title, colors[colorCounter]);
+//       chartMovies.add(chartCompMovie);
+//       colorCounter += 1;
+//     }
+//   }
+// }
 class CompareMovies extends StatefulWidget {
-  List<Movie> selectedMovies = [];
+  final List<Movie> selectedMovies;
   CompareMovies(this.selectedMovies);
+
   @override
   State<CompareMovies> createState() =>
       _CompareMoviesState(selectedMovies: this.selectedMovies);
 }
 
 class _CompareMoviesState extends State<CompareMovies> {
-  List<Movie>? selectedMovies = [];
-  _CompareMoviesState({this.selectedMovies});
+  final List<Movie> selectedMovies;
+  _CompareMoviesState({required this.selectedMovies});
 
-  List<CompMovie?> compareMovies = [];
+  List<CompMovie> compareMovies = [];
   CompMovie? compareMovie;
 
   List<ChartCompMovie> chartMovies = [];
-  // ignore: missing_return
-  Future<List<CompMovie?>> loadCompareMovie() async {
-    int? movieId;
+
+  Future<List<CompMovie>> loadCompareMovie() async {
     try {
-      for (var item in selectedMovies!) {
-        movieId = item.id;
+      for (var item in selectedMovies) {
+        int movieId = item.id;
         print(item.id);
         Uri uri = Uri.parse(
             "http://${Constants().hostName}:8080/api/productions/$movieId/events");
         Response data = await get(uri, headers: {
           "Accept": "application/json",
           "authorization":
-              "${await AuthorizationStore.getStoreValue("authorization")}"
+          "${await AuthorizationStore.getStoreValue("authorization")}"
         });
         var jsonData = jsonDecode(data.body);
 
         if (jsonData['data'].toString() == '[]') {
           print("Null data");
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(item.title! + " has no event."),
+            content: Text("${item.title} has no event."),
           ));
           break;
         } else {
-          compareMovie = new CompMovie(
+          compareMovie = CompMovie(
               item.id, item.title, jsonData['data'][0]['priceRange']);
-          compareMovies.add(compareMovie);
+          compareMovies.add(compareMovie!);
         }
       }
       return compareMovies;
-    } on Exception {
-      print('error data');
+    } catch (e) {
+      print('Error loading data: $e');
+      return []; // Return empty list in case of error
     }
-    throw '';
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: FutureBuilder(
+        child: FutureBuilder<List<CompMovie>>(
             future: loadCompareMovie(),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<CompMovie?>> snapshot) {
-              if (!snapshot.hasData) {
+            builder:
+                (BuildContext context, AsyncSnapshot<List<CompMovie>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
                 return Loading();
               } else if (snapshot.hasError) {
-                return Text("error loading");
+                return Text("Error loading movies");
+              } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                castPrice(compareMovies);
+                return chartBuilder();
               } else {
-                if (snapshot.data!.isNotEmpty) {
-                  castPrice(compareMovies);
-                  return chartBuilder();
-                } else {
-                  Navigator.pop(context);
-                  return Container();
-                }
+                Navigator.pop(context);
+                return Container();
               }
             }));
   }
@@ -91,16 +230,14 @@ class _CompareMoviesState extends State<CompareMovies> {
   Widget chartBuilder() {
     print(chartMovies[0].title);
     print(chartMovies[0].priceRange.toString());
-    print(compareMovies[0]!.priceRange.toString());
+    print(compareMovies[0].priceRange.toString());
     return Scaffold(
       appBar: AppBar(
-        // ignore: deprecated_member_use
         title: Text(
           'Ticket prices',
           style: TextStyle(color: MyColors().cyan),
         ),
-        backgroundColor: MyColors().black,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: MyColors().black, systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       backgroundColor: MyColors().black,
       body: Container(
@@ -111,7 +248,7 @@ class _CompareMoviesState extends State<CompareMovies> {
                   dataSource: chartMovies,
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                   pointColorMapper: (ChartCompMovie movie, _) =>
-                      movie.columnColor,
+                  movie.columnColor,
                   xValueMapper: (ChartCompMovie movie, _) => movie.title,
                   yValueMapper: (ChartCompMovie movie, _) => movie.priceRange)
             ],
@@ -127,32 +264,30 @@ class _CompareMoviesState extends State<CompareMovies> {
     );
   }
 
-  castPrice(List<CompMovie?> compareMovies) {
+  void castPrice(List<CompMovie> compareMovies) {
     var doubleRE = RegExp(r"-?(?:\d*\.)?\d+(?:[eE][+-]?\d+)?");
-    var clearPrice;
+    double? clearPrice;
     var colors = [Colors.red, Colors.teal, Colors.orange, Colors.brown];
     var colorCounter = 0;
-    print("Clear price values");
+
     for (var item in compareMovies) {
-      //clear the number values from priceRenge
-      item!.priceRange = item.priceRange!.replaceAll(',', '.');
+      // Clear the number values from priceRange
+      item.priceRange = item.priceRange.replaceAll(',', '.');
       var numbers = doubleRE
-          .allMatches(item.priceRange!)
+          .allMatches(item.priceRange)
           .map((m) => double.parse(m[0]!))
           .toList();
       if (numbers.isNotEmpty) {
         clearPrice = numbers.reduce(max);
       } else {
-        clearPrice = 12.0;
-      }
-      if (clearPrice == null) {
-        clearPrice = 11.0;
+        clearPrice = 12.0; // Default price if none found
       }
 
-      ChartCompMovie chartCompMovie = new ChartCompMovie(
+      ChartCompMovie chartCompMovie = ChartCompMovie(
           item.id, item.title, clearPrice, item.title, colors[colorCounter]);
       chartMovies.add(chartCompMovie);
-      colorCounter += 1;
+
+      colorCounter = (colorCounter + 1) % colors.length; // Cycle through colors
     }
   }
 }

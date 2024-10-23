@@ -7,21 +7,197 @@ import 'CompareTheaters.dart';
 import 'TheaterInfo.dart';
 
 // ignore: must_be_immutable
+// class Theaters extends StatefulWidget {
+//   List<Theater> theaters = [];
+//   Theaters(this.theaters);
+//   @override
+//   _TheatersState createState() => _TheatersState(theaters: theaters);
+// }
+//
+// class _TheatersState extends State<Theaters> {
+//   List<Theater> theaters = [];
+//   _TheatersState({this.theaters});
+//   String query = '';
+//   List<Theater> theatersToSearch = [];
+//   List<Theater> selectedTheaters = [];
+//   void initState() {
+//     theatersToSearch = List.from(theaters);
+//     super.initState();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: MyColors().black,
+//       body: Container(
+//         child: Column(
+//           children: [
+//             SearchWidget(
+//                 text: query,
+//                 hintText: 'Theater name',
+//                 onChanged: searchTheaters),
+//             Expanded(
+//               child: ListView.builder(
+//                   itemCount: theaters.length,
+//                   itemBuilder: (context, index) {
+//                     return ListTile(
+//                       onTap: () {
+//                         Navigator.push(
+//                             context,
+//                             //open the tapped item
+//                             MaterialPageRoute(
+//                                 builder: (context) =>
+//                                     TheaterInfo(theaters[index].id)));
+//                       },
+//                       leading: Padding(
+//                         padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
+//                         child: CircleAvatar(
+//                           radius: 30.0,
+//                           backgroundColor: Colors.white,
+//                           backgroundImage: NetworkImage(
+//                               'https://thumbs.dreamstime.com/z/location-pin-icon-165980583.jpg'),
+//                         ),
+//                       ),
+//                       title: Text(
+//                         theaters[index].title,
+//                         style: TextStyle(color: MyColors().cyan),
+//                       ),
+//                       subtitle: Text(
+//                         theaters[index].address,
+//                         style: TextStyle(color: MyColors().white),
+//                       ),
+//                       trailing: theaters[index].isSelected
+//                           ? Icon(
+//                               Icons.check_circle,
+//                               color: MyColors().cyan,
+//                             )
+//                           : Icon(
+//                               Icons.check_circle_outline,
+//                               color: MyColors().gray,
+//                             ),
+//                       onLongPress: () {
+//                         setState(() {
+//                           theaters[index].isSelected =
+//                               !theaters[index].isSelected;
+//                           print("Clicked");
+//                           if (theaters[index].isSelected == true) {
+//                             selectedTheaters.add(theaters[index]);
+//                           } else if (theaters[index].isSelected == false) {
+//                             selectedTheaters.removeWhere(
+//                                 (element) => element.id == theaters[index].id);
+//                           }
+//                         });
+//                       },
+//                     );
+//                   }),
+//             ),
+//             selectedTheaters.length > 0
+//                 ? Padding(
+//                     padding: const EdgeInsets.symmetric(
+//                         horizontal: 25, vertical: 10),
+//                     child: Column(
+//                       children: [
+//                         SizedBox(
+//                             width: double.infinity,
+//                             // ignore: deprecated_member_use
+//                             child: ElevatedButton(
+//                               style: ElevatedButton.styleFrom(
+//                                 backgroundColor: MyColors()
+//                                     .gray, // Set the background color of the button
+//                               ),
+//                               child: Text(
+//                                 "Compare (${selectedTheaters.length})",
+//                                 style: TextStyle(
+//                                     color: MyColors().cyan, fontSize: 18),
+//                               ),
+//                               onPressed: () {
+//                                 // print("Compare Click");
+//                                 Navigator.push(
+//                                     context,
+//                                     MaterialPageRoute(
+//                                         builder: (context) =>
+//                                             CompareTheaters(selectedTheaters)));
+//                               },
+//                             )),
+//                         SizedBox(
+//                             width: double.infinity,
+//                             // ignore: deprecated_member_use
+//                             child: ElevatedButton(
+//                               style: ElevatedButton.styleFrom(
+//                                 backgroundColor: MyColors()
+//                                     .gray, // Set the background color of the button
+//                               ),
+//                               child: Text(
+//                                 "Clear",
+//                                 style: TextStyle(
+//                                     color: MyColors().cyan, fontSize: 18),
+//                               ),
+//                               onPressed: () {
+//                                 setState(() {
+//                                   List<Theater> removeList = [];
+//                                   selectedTheaters.forEach((item) {
+//                                     removeList.add(item);
+//                                   });
+//                                   removeList.forEach((removeItem) {
+//                                     for (var theater in theaters) {
+//                                       if (theater.id == removeItem.id) {
+//                                         theater.isSelected =
+//                                             !theater.isSelected;
+//                                       }
+//                                     }
+//                                   });
+//                                   selectedTheaters.clear();
+//                                 });
+//                               },
+//                             ))
+//                       ],
+//                     ))
+//                 : Container()
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+//
+//   Future searchTheaters(String query) async {
+//     final search = theatersToSearch.where((theater) {
+//       final searchActors = theater.title.toLowerCase();
+//       final searchLower = query.toLowerCase();
+//
+//       return searchActors.contains(searchLower);
+//     }).toList();
+//     if (query.isEmpty) {
+//       setState(() {
+//         this.query = "";
+//         this.theaters = theatersToSearch;
+//       });
+//     } else {
+//       setState(() {
+//         this.query = query;
+//         this.theaters = search;
+//       });
+//     }
+//   }
+// }
 class Theaters extends StatefulWidget {
-  List<Theater> theaters = [];
+  final List<Theater> theaters; // Marking as final and non-nullable
   Theaters(this.theaters);
+
   @override
   _TheatersState createState() => _TheatersState(theaters: theaters);
 }
 
 class _TheatersState extends State<Theaters> {
-  List<Theater>? theaters = [];
-  _TheatersState({this.theaters});
+  late final List<Theater> theaters; // Marking as final and non-nullable
+  _TheatersState({required this.theaters});
+
   String query = '';
-  List<Theater> theatersToSearch = [];
+  late List<Theater> theatersToSearch;
   List<Theater> selectedTheaters = [];
+
+  @override
   void initState() {
-    theatersToSearch = List.from(theaters!);
+    theatersToSearch = List.from(theaters);
     super.initState();
   }
 
@@ -38,16 +214,15 @@ class _TheatersState extends State<Theaters> {
                 onChanged: searchTheaters),
             Expanded(
               child: ListView.builder(
-                  itemCount: theaters!.length,
+                  itemCount: theaters.length,
                   itemBuilder: (context, index) {
                     return ListTile(
                       onTap: () {
                         Navigator.push(
                             context,
-                            //open the tapped item
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    TheaterInfo(theaters![index].id)));
+                                    TheaterInfo(theaterId:theaters[index].id)));
                       },
                       leading: Padding(
                         padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
@@ -59,123 +234,108 @@ class _TheatersState extends State<Theaters> {
                         ),
                       ),
                       title: Text(
-                        theaters![index].title!,
+                        theaters[index].title,
                         style: TextStyle(color: MyColors().cyan),
                       ),
                       subtitle: Text(
-                        theaters![index].address!,
+                        theaters[index].address  , // Handle nullable address
                         style: TextStyle(color: MyColors().white),
                       ),
-                      trailing: theaters![index].isSelected!
+                      trailing: theaters[index].isSelected
                           ? Icon(
-                              Icons.check_circle,
-                              color: MyColors().cyan,
-                            )
+                        Icons.check_circle,
+                        color: MyColors().cyan,
+                      )
                           : Icon(
-                              Icons.check_circle_outline,
-                              color: MyColors().gray,
-                            ),
+                        Icons.check_circle_outline,
+                        color: MyColors().gray,
+                      ),
                       onLongPress: () {
                         setState(() {
-                          theaters![index].isSelected =
-                              !theaters![index].isSelected!;
+                          theaters[index].isSelected =
+                          !theaters[index].isSelected;
                           print("Clicked");
-                          if (theaters![index].isSelected == true) {
-                            selectedTheaters.add(theaters![index]);
-                          } else if (theaters![index].isSelected == false) {
+                          if (theaters[index].isSelected) {
+                            selectedTheaters.add(theaters[index]);
+                          } else {
                             selectedTheaters.removeWhere(
-                                (element) => element.id == theaters![index].id);
+                                    (element) => element.id == theaters[index].id);
                           }
                         });
                       },
                     );
                   }),
             ),
-            selectedTheaters.length > 0
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 25, vertical: 10),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                            width: double.infinity,
-                            // ignore: deprecated_member_use
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: MyColors()
-                                    .gray, // Set the background color of the button
-                              ),
-                              child: Text(
-                                "Compare (${selectedTheaters.length})",
-                                style: TextStyle(
-                                    color: MyColors().cyan, fontSize: 18),
-                              ),
-                              onPressed: () {
-                                // print("Compare Click");
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            CompareTheaters(selectedTheaters)));
-                              },
-                            )),
-                        SizedBox(
-                            width: double.infinity,
-                            // ignore: deprecated_member_use
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: MyColors()
-                                    .gray, // Set the background color of the button
-                              ),
-                              child: Text(
-                                "Clear",
-                                style: TextStyle(
-                                    color: MyColors().cyan, fontSize: 18),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  List<Theater> removeList = [];
-                                  selectedTheaters.forEach((item) {
-                                    removeList.add(item);
-                                  });
-                                  removeList.forEach((removeItem) {
-                                    for (var theater in theaters!) {
-                                      if (theater.id == removeItem.id) {
-                                        theater.isSelected =
-                                            !theater.isSelected!;
-                                      }
-                                    }
-                                  });
-                                  selectedTheaters.clear();
-                                });
-                              },
-                            ))
-                      ],
-                    ))
-                : Container()
+            if (selectedTheaters.isNotEmpty)
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                child: Column(
+                  children: [
+                    SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            // backgroundColor: MyColors().gray,
+                          ),
+                          child: Text(
+                            "Compare (${selectedTheaters.length})",
+                            style: TextStyle(
+                                color: MyColors().cyan, fontSize: 18),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CompareTheaters(selectedTheaters)));
+                          },
+                        )),
+                    SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            // backgroundColor: MyColors().gray,
+                          ),
+                          child: Text(
+                            "Clear",
+                            style: TextStyle(
+                                color: MyColors().cyan, fontSize: 18),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              List<Theater> removeList = List.from(selectedTheaters);
+                              for (var removeItem in removeList) {
+                                for (var theater in theaters) {
+                                  if (theater.id == removeItem.id) {
+                                    theater.isSelected = false;
+                                  }
+                                }
+                              }
+                              selectedTheaters.clear();
+                            });
+                          },
+                        ))
+                  ],
+                ),
+              )
           ],
         ),
       ),
     );
   }
 
-  Future searchTheaters(String query) async {
+  Future<void> searchTheaters(String query) async {
     final search = theatersToSearch.where((theater) {
-      final searchActors = theater.title!.toLowerCase();
+      final searchTheater = theater.title.toLowerCase();
       final searchLower = query.toLowerCase();
 
-      return searchActors.contains(searchLower);
+      return searchTheater.contains(searchLower);
     }).toList();
-    if (query.isEmpty) {
-      setState(() {
-        this.query = "";
-        this.theaters = theatersToSearch;
-      });
-    } else {
-      setState(() {
-        this.query = query;
-        this.theaters = search;
-      });
-    }
+
+    setState(() {
+      this.query = query;
+      theaters = query.isEmpty ? theatersToSearch : search;
+    });
   }
 }

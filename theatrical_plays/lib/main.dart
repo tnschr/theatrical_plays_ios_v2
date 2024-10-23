@@ -17,7 +17,7 @@ void main() {
                       fontStyle: FontStyle.italic,
                     )),
                 Text(
-                  "analytics",
+                  "Plays",
                   style: TextStyle(
                     color: MyColors().cyan,
                     fontSize: 30,
